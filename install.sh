@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function pause(){
-   read -p "$*"
+   read -p -r "$*"
 }
 
 
@@ -10,7 +10,7 @@ pause 'Press [Enter]...'
 curl -s https://falco.org/repo/falcosecurity-packages.asc | apt-key add -
 clear
 
-echo "Executando: deb https://download.falco.org/packages/deb stable main" | tee -a /etc/apt/sources.list.d/falcosecurity.list"
+echo 'Executando: deb https://download.falco.org/packages/deb stable main" | tee -a /etc/apt/sources.list.d/falcosecurity.list'
 pause 'Press [Enter]...'
 echo 'deb https://download.falco.org/packages/deb stable main | tee -a /etc/apt/sources.list.d/falcosecurity.list'
 clear
@@ -20,9 +20,9 @@ pause 'Press [Enter]...'
 apt-get update -y
 clear
 
-echo 'Executando: apt install -y dkms make clang llvm dialog linux-headers-$(uname -r)'
+echo 'Executando: apt install -y dkms make clang llvm dialog "linux-headers-$(uname -r)"'
 pause 'Press [Enter]...'
-apt install -y dkms make clang llvm dialog linux-headers-$(uname -r)
+apt install -y dkms make clang llvm dialog "linux-headers-$(uname -r)"
 clear
 
 echo 'Executando: apt-get install -y falco'
