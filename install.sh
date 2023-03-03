@@ -35,6 +35,6 @@ pause 'Press [Enter]...'
 falco-driver-loader module
 clear
 
-echo "Executando: wget https://raw.githubusercontent.com/cristianovisk/install_falco_ubuntu/main/falco.yaml -O /etc/falco/falco.yaml"
+echo 'Executando: wget https://raw.githubusercontent.com/cristianovisk/install_falco_ubuntu/main/falco.yaml -O /etc/falco/falco.yaml'
 pause 'Press [Enter]...'
 wget https://raw.githubusercontent.com/cristianovisk/install_falco_ubuntu/main/falco.yaml -O /etc/falco/falco.yaml
