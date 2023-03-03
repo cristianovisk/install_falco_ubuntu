@@ -1,0 +1,126 @@
+rules_file:
+  - /etc/falco/falco_rules.yaml
+  - /etc/falco/falco_rules.local.yaml
+  - /etc/falco/rules.d
+
+
+plugins:
+  - name: k8saudit
+    library_path: libk8saudit.so
+    init_config:
+    #   maxEventSize: 262144
+    #   webhookMaxBatchSize: 12582912
+    #   sslCertificate: /etc/falco/falco.pem
+    open_params: "http://:9765/k8s-audit"
+  - name: cloudtrail
+    library_path: libcloudtrail.so
+    # see docs for init_config and open_params:
+    # https://github.com/falcosecurity/plugins/blob/master/plugins/cloudtrail/README.md
+  - name: json
+    library_path: libjson.so
+
+load_plugins: []
+
+watch_config_files: true
+
+time_format_iso_8601: false
+
+json_output: true
+
+json_include_output_property: true
+
+json_include_tags_property: true
+
+log_stderr: true
+log_syslog: true
+
+log_level: info
+
+libs_logger:
+  enabled: false
+  # Minimum log severity to include in the libs logs. Note: this value is
+  # separate from the log level of the Falco logger and does not affect it.
+  # Can be one of "fatal", "critical", "error", "warning", "notice",
+  # "info", "debug", "trace".
+  severity: debug
+
+priority: debug
+
+buffered_outputs: false
+
+
+syscall_event_drops:
+  threshold: .1
+  actions:
+    - log
+    - alert
+  rate: .03333
+  max_burst: 1
+  simulate_drops: false
+
+
+syscall_event_timeouts:
+  max_consecutives: 1000
+
+
+syscall_buf_size_preset: 4
+
+
+modern_bpf:
+  cpus_for_each_syscall_buffer: 2
+
+
+output_timeout: 2000
+
+
+outputs:
+  rate: 0
+  max_burst: 1000
+
+
+syslog_output:
+  enabled: true
+
+
+file_output:
+  enabled: false
+  keep_alive: false
+  filename: ./events.txt
+
+stdout_output:
+  enabled: true
+
+webserver:
+  enabled: true
+  # when threadiness is 0, Falco automatically guesses it depending on the number of online cores
+  threadiness: 0
+  listen_port: 8765
+  k8s_healthz_endpoint: /healthz
+  ssl_enabled: false
+  ssl_certificate: /etc/falco/falco.pem
+
+
+program_output:
+  enabled: false
+  keep_alive: false
+  program: "jq '{text: .output}' | curl -d @- -X POST https://hooks.slack.com/services/XXX"
+
+http_output:
+  enabled: true
+  url: http://127.0.0.1:2801/
+  user_agent: "falcosecurity/falco"
+
+
+grpc:
+  enabled: false
+  bind_address: "unix:///run/falco/falco.sock"
+  # when threadiness is 0, Falco automatically guesses it depending on the number of online cores
+  threadiness: 0
+
+grpc_output:
+  enabled: false
+
+metadata_download:
+  max_mb: 100
+  chunk_wait_us: 1000
+  watch_freq_sec: 1
