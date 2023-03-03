@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function pause(){
-   read -p -r "$*"
+   read -p "$*"
 }
 
 
