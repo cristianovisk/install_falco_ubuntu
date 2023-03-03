@@ -1,7 +1,6 @@
 #!/bin/bash
 clear
 function pause(){
-   echo "Press [Enter]..."
    read -p n
 }
 
