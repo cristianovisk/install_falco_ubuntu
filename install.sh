@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 function pause(){
-   echo 'Press [Enter]...'
+   echo "Press [Enter]..."
    read -p "$*"
 }
 
