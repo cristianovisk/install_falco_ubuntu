@@ -2,7 +2,7 @@
 clear
 function pause(){
    echo "Press [Enter]..."
-   read -p "$*"
+   read -p n
 }
 
 
